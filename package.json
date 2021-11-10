@@ -11,9 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "babylonjs": "^4.2.0",
+    "css-loader": "^6.5.0",
     "earcut": "^2.2.3",
     "html-webpack-plugin": "^5.5.0",
     "prettier": "^2.4.1",
+    "style-loader": "^3.3.1",
     "webpack": "^5.61.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.4.0"

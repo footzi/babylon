@@ -3,5 +3,6 @@
 // import "./scripts/child-parent";
 // import "./scripts/car";
 // import "./scripts/dude";
-import "./scripts/walk-triangle";
-
+// import "./scripts/walk-triangle";
+import './city';
+import './index.css';

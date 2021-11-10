@@ -1,0 +1,61 @@
+{
+  "roads": [
+    {
+      "name": 1,
+      "coords": [
+        {
+          "x": 10,
+          "z": 8,
+          "isVertical": true
+        },
+        {
+          "x": 10,
+          "z": 9,
+          "isVertical": true
+        },
+        {
+          "x": 10,
+          "z": 10,
+          "isCrossroad": true,
+          "isVertical": true
+        },
+        {
+          "x": 10,
+          "z": 11,
+          "isVertical": true
+        },
+        {
+          "x": 10,
+          "z": 12,
+          "isVertical": true
+        }
+      ]
+    },
+    {
+      "name": 2,
+      "coords": [
+        {
+          "x": 8,
+          "z": 10
+        },
+        {
+          "x": 9,
+          "z": 10
+        },
+        {
+          "x": 10,
+          "z": 10,
+          "isCrossroad": true
+        },
+        {
+          "x": 11,
+          "z": 10
+        },
+        {
+          "x": 12,
+          "z": 10
+        }
+      ]
+    }
+  ]
+}
