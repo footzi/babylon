@@ -11,6 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "babylonjs": "^4.2.0",
+    "babylonjs-gui": "^4.2.0",
+    "babylonjs-loaders": "^4.2.0",
+    "babylonjs-materials": "^4.2.0",
     "css-loader": "^6.5.0",
     "earcut": "^2.2.3",
     "html-webpack-plugin": "^5.5.0",

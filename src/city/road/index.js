@@ -1,29 +1,25 @@
 import * as BABYLON from 'babylonjs';
-import {GROUND} from '../constants';
 import {ROAD, ROAD_MARKUP} from './constants';
+import {POSITION_Y} from '../constants';
 import Data from '../data.json';
+import {setAbsolutePosition, setPosition, setRotation} from '../utils';
 
 export const paintRoads = () => {
     Data.roads.forEach((road) => paintRoad(road.coords));
 };
 
 const paintRoad = (coords) => {
+    // const roadMeshes = [];
     const planeMaterial = new BABYLON.StandardMaterial('planeMaterial');
     planeMaterial.diffuseColor = new BABYLON.Color3.FromHexString(ROAD.COLOR);
 
-    const startX = (-GROUND.WIDTH + ROAD.SIZE) / 2;
-    const startZ = (-GROUND.HEIGHT + ROAD.SIZE) / 2;
-
     coords.forEach((item) => {
-        const plane = BABYLON.MeshBuilder.CreatePlane('plane', {
+        const plane = BABYLON.MeshBuilder.CreatePlane('roadItem', {
             size: ROAD.SIZE,
         });
 
-        const x = startX + item.x;
-        const y = 0.01;
-        const z = startZ + item.z;
+        setAbsolutePosition(item.x, POSITION_Y.ROAD, item.z, plane);
 
-        plane.position = new BABYLON.Vector3(x, y, z);
         plane.rotation.x = BABYLON.Tools.ToRadians(90);
         plane.material = planeMaterial;
 
@@ -34,7 +30,11 @@ const paintRoad = (coords) => {
         if (!item.isCrossroad) {
             paintRoadMarkup(plane);
         }
+
+        // roadMeshes.push(plane);
     });
+
+    // new BABYLON.Mesh.MergeMeshes(roadMeshes);
 };
 
 const paintRoadMarkup = (road) => {
@@ -45,8 +45,8 @@ const paintRoadMarkup = (road) => {
 
     markup.setParent(road);
 
-    markup.position = new BABYLON.Vector3(-0.25, 0, -0.001);
-    markup.rotation = new BABYLON.Vector3(0, 0, 0);
+    setPosition(-0.25, 0, -0.001, markup);
+    setRotation(0, 0, 0, markup);
 
     const markupMaterial = new BABYLON.StandardMaterial('roadMarkupMaterial');
     markupMaterial.diffuseColor = new BABYLON.Color3.FromHexString(
@@ -54,6 +54,6 @@ const paintRoadMarkup = (road) => {
     );
     markup.material = markupMaterial;
 
-    const copiedPlane1 = markup.clone();
-    copiedPlane1.position.x = 0.25;
+    const copiedPlane = markup.clone('roadMarkupCopied');
+    copiedPlane.position.x = 0.25;
 };
