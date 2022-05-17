@@ -5,6 +5,17 @@
       "coords": [
         {
           "x": 10,
+          "z": 6,
+          "isVertical": true,
+          "isCrossroad": true
+        },
+        {
+          "x": 10,
+          "z": 7,
+          "isVertical": true
+        },
+        {
+          "x": 10,
           "z": 8,
           "isVertical": true
         },
@@ -54,8 +65,128 @@
         {
           "x": 12,
           "z": 10
+        },
+        {
+          "x": 13,
+          "z": 10
+        },
+        {
+          "x": 15,
+          "z": 10
         }
       ]
+    },
+    {
+      "name": 3,
+      "coords": [
+        {
+          "x": 14,
+          "z": 1,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 2,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 3,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 4,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 5,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 6,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 7,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 8,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 9,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 10,
+          "isVertical": true,
+          "isCrossroad": true
+        },
+        {
+          "x": 14,
+          "z": 11,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 12,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 13,
+          "isVertical": true
+        },
+        {
+          "x": 14,
+          "z": 14,
+          "isVertical": true
+        }
+      ]
+    },
+    {
+      "name": 4,
+      "coords": [
+        {
+          "x": 11,
+          "z": 6
+        },
+        {
+          "x": 12,
+          "z": 6
+        },
+        {
+          "x": 13,
+          "z": 6
+        }
+      ]
+    }
+  ],
+  "cars": [
+    {
+      "name": "VW",
+      "color": "#FFFF00",
+      "coords": {"x": 14, "y": 0, "z": 1},
+      "animation": {
+        "endCoords": {"z": 14},
+        "speedTime": 360
+      }
+    }, {
+      "name": "BMW",
+      "color": "#eb3434",
+      "coords": {"x": 7, "y": 0, "z": 10},
+      "animation": {
+        "endCoords": {"x": 15},
+        "speedTime": 240
+      }
     }
   ]
 }

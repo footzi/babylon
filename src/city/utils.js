@@ -1,6 +1,5 @@
 import {GROUND} from './constants';
 import * as BABYLON from 'babylonjs';
-import {ROAD} from './road/constants';
 
 export const setAbsolutePosition = (
     requireX,

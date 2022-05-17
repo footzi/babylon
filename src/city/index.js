@@ -1,12 +1,15 @@
 import * as BABYLON from 'babylonjs';
 import 'babylonjs-loaders';
-import {BUILDING, GROUND} from './constants';
+import {BUILDING} from './constants';
 import {paintRoads} from './road';
 import {paintGridCoords} from './gridCoords';
 import {setAbsolutePosition} from './utils';
 import {paintBuildings} from './buildings';
 import {paintGround} from './ground';
-import {paintCar} from './car';
+import {paintCar} from './Car';
+import {CONFIG} from './config';
+import {MouseDrag} from './MouseControll/MouseDrag';
+import {CityCamera} from './Camera';
 
 let scene = null;
 
@@ -16,10 +19,10 @@ const engine = new BABYLON.Engine(canvas, true, {
     stencil: true,
 });
 
-const input1 = document.getElementById('value-1');
-input1.addEventListener('input', (event) => {
-    const value = Number(event.target.value);
-});
+// const input1 = document.getElementById('value-1');
+// input1.addEventListener('input', (event) => {
+//     const value = Number(event.target.value);
+// });
 
 const createBuilding = () => {
     const box = BABYLON.MeshBuilder.CreateBox('box', {
@@ -40,7 +43,54 @@ const createBuilding = () => {
 
 const createScene = () => {
     const scene = new BABYLON.Scene(engine);
-    scene.debugLayer.show();
+
+    // const camera = new CityCamera(scene, canvas).init();
+
+    // const camera = new BABYLON.ArcRotateCamera(
+    //     'camera',
+    //     -Math.PI / 2,
+    //     Math.PI / 4,
+    //     5,
+    //     new BABYLON.Vector3(0, 0, 0),
+    //     scene,
+    // );
+    //
+    // camera.attachControl(canvas, true);
+
+    // вращение вверх-вниз
+    // camera.upperBetaLimit = 1.3;
+    // camera.lowerBetaLimit = 0.8;
+
+    // приближение-отдаление
+    // camera.upperRadiusLimit = 10;
+    // camera.lowerRadiusLimit = 2;
+
+    // const light = new BABYLON.HemisphericLight(
+    //     'light',
+    //     new BABYLON.Vector3(0, 1, 0),
+    //     scene,
+    // );
+    //
+    // // Интенсивность света
+    // light.intensity = 1;
+
+    // const ground = paintGround();
+    // paintRoads();
+    // paintBuildings(scene);
+    // paintCar(scene);
+    // // createBuilding();
+    //
+    // if (CONFIG.isGridCoords) {
+    //     paintGridCoords();
+    // }
+    //
+    // if (CONFIG.isDebugLayer) {
+    //     scene.debugLayer.show();
+    // }
+    //
+    // if (CONFIG.isMouseDrag) {
+    //     MouseDrag.init(scene, camera);
+    // }
 
     const camera = new BABYLON.ArcRotateCamera(
         'camera',
@@ -48,35 +98,16 @@ const createScene = () => {
         Math.PI / 2.5,
         3,
         new BABYLON.Vector3(0, 0, 0),
-        scene,
     );
-
     camera.attachControl(canvas, true);
-
-    // вращение вверх-вниз
-    camera.upperBetaLimit = 1.3;
-    camera.lowerBetaLimit = 0.8;
-
-    // приближение-отдаление
-    camera.upperRadiusLimit = 10;
-    camera.lowerRadiusLimit = 2;
 
     const light = new BABYLON.HemisphericLight(
         'light',
         new BABYLON.Vector3(0, 1, 0),
-        scene,
     );
 
-    // Интенсивность света
-    light.intensity = 1;
+    const box = BABYLON.MeshBuilder.CreateBox('box', {});
 
-    const ground = paintGround();
-    paintRoads();
-    paintBuildings(scene);
-    paintCar(scene);
-    // createBuilding();
-
-    paintGridCoords();
     return scene;
 };
 
@@ -89,13 +120,3 @@ engine.runRenderLoop(function () {
 window.addEventListener('resize', function () {
     engine.resize();
 });
-
-scene.onPointerPick = (event, pickInfo) => {
-    // if (pickInfo?.pickedMesh?.name === 'cursor') {
-    //     const vector = pickInfo.pickedPoint;
-    //
-    //     if (vector) {
-    //         paintRoad(vector);
-    //     }
-    // }
-};
