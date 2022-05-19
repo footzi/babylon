@@ -1,8 +1,6 @@
-// import "./scripts/main";
-// import "./scripts/big-house";
-// import "./scripts/child-parent";
-// import "./scripts/car";
-// import "./scripts/dude";
-// import "./scripts/walk-triangle";
-import './city';
+import {City} from './city/City';
+
+const canvas = document.getElementById('canvas');
+new City(canvas);
+
 import './index.css';
