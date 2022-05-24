@@ -1,10 +1,11 @@
 import {ArcRotateCamera, ICameraInput, Vector3} from 'babylonjs';
 import Hammer from 'hammerjs';
+import {CONFIG} from '../config';
 
-export class MyCamera implements ICameraInput<ArcRotateCamera> {
+export class CityCamera implements ICameraInput<ArcRotateCamera> {
     public camera!: ArcRotateCamera;
 
-    public panTresholdInPixels = 40;
+    public panTresholdInPixels = 0;
 
     private startCenterX = 0;
     private startCenterY = 0;
@@ -12,9 +13,10 @@ export class MyCamera implements ICameraInput<ArcRotateCamera> {
     public xPanningRatioSingleTouch = 0.14;
     public zPanningRatioSingleTouch = 0.18;
 
-    private targetAlpha = -Math.PI / 2;
-    private targetBeta = Math.PI / 2.5;
-    private targetRadius = 3;
+    private targetAlpha = CONFIG.camera.alpha;
+    private targetBeta = CONFIG.camera.beta;
+    private targetRadius = CONFIG.camera.radius;
+    private panDistanceInfluence = CONFIG.camera.panDistanceInfluence;
 
     private targetPosition = new Vector3();
     private targetTarget = new Vector3();
@@ -22,7 +24,7 @@ export class MyCamera implements ICameraInput<ArcRotateCamera> {
     private startTarget = Vector3.Zero();
     private startPosition = Vector3.Zero();
 
-    attachControl(noPreventDefault?: boolean) {
+    public attachControl(noPreventDefault?: boolean) {
         const engine = this.camera.getEngine();
         const element = <EventTarget>engine.getInputElement();
         const manager = new Hammer.Manager(element);
@@ -31,39 +33,42 @@ export class MyCamera implements ICameraInput<ArcRotateCamera> {
 
         manager.add(pan);
 
-        // register hammerjs events
         manager.on('panstart', (event) => this.panStart(event));
         manager.on('pan', (e) => this.pan(e));
-        // manager.on('panend', (e) => this.panEnd());
-
+        manager.on('hammer.input', (e: HammerInput) => {
+            if (e.isFirst) {
+                this.initStartValues();
+                this.initTargetValues();
+            }
+        });
         this.camera.getScene().onBeforeRenderObservable.add(() => {
+            this.setBorders();
+
             this.camera.target = this.targetTarget;
             this.camera.position = this.targetPosition;
+
             this.camera.alpha = this.targetAlpha;
             this.camera.beta = this.targetBeta;
             this.camera.radius = this.targetRadius;
         });
     }
 
-    panStart(event: HammerInput) {
-        console.log(event.pointers[0]);
-
+    private panStart(event: HammerInput) {
         this.startCenterX = event.pointers[0].clientX;
         this.startCenterY = event.pointers[0].clientY;
     }
 
-    pan(event: HammerInput) {
-        const panDistanceInfluence = 1;
+    private pan(event: HammerInput) {
         const dx = -(this.startCenterX - event.pointers[0].clientX);
         const dy = this.startCenterY - event.pointers[0].clientY;
+
         this.panMove(
-            dx * this.xPanningRatioSingleTouch * panDistanceInfluence,
-            dy * this.zPanningRatioSingleTouch * panDistanceInfluence,
+            dx * this.xPanningRatioSingleTouch * this.panDistanceInfluence,
+            dy * this.zPanningRatioSingleTouch * this.panDistanceInfluence,
         );
     }
 
-    panMove(dx: number, dy: number) {
-        // rotate the position according to camera.alpha
+    private panMove(dx: number, dy: number) {
         const alpha = this.camera.alpha - Math.PI / 2;
         const c = Math.cos(alpha);
         const s = Math.sin(alpha);
@@ -79,21 +84,49 @@ export class MyCamera implements ICameraInput<ArcRotateCamera> {
         this.targetPosition.z = this.startPosition.z + y2;
     }
 
-    /**
-     * Gets the class name of the current input.
-     * @returns the class name
-     */
     public getClassName(): string {
-        return 'ArcRotateCameraHammerJsInput';
+        return 'CityCamera';
     }
 
-    /**
-     * Get the friendly name associated with the input class.
-     * @returns the input friendly name
-     */
     public getSimpleName(): string {
-        return 'ArcRotateCameraHammerJsInput';
+        return 'CityCamera';
     }
 
-    detachControl() {}
+    public detachControl() {}
+
+    private initStartValues() {
+        this.startPosition = this.camera.position.clone();
+        this.startTarget = this.camera.target.clone();
+    }
+
+    private initTargetValues() {
+        this.targetAlpha = this.camera.alpha;
+        this.targetBeta = this.camera.beta;
+        this.targetRadius = this.camera.radius;
+        this.targetPosition = this.camera.position.clone();
+        this.targetTarget = this.camera.target.clone();
+    }
+
+    private setBorders() {
+        if (!CONFIG.moveBorders) {
+            return;
+        }
+        const {maxZ, minZ, maxX, minX} = CONFIG.moveBorders;
+
+        if (this.targetTarget.z >= maxZ) {
+            this.targetTarget.z = maxZ;
+        }
+
+        if (this.targetTarget.z <= minZ) {
+            this.targetTarget.z = minZ;
+        }
+
+        if (this.targetTarget.x >= maxX) {
+            this.targetTarget.x = maxX;
+        }
+
+        if (this.targetTarget.x <= minX) {
+            this.targetTarget.x = minX;
+        }
+    }
 }

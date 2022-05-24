@@ -9,7 +9,7 @@ import {paintGround} from './ground';
 import {paintCar} from './Car';
 import {CONFIG} from './config';
 import {MouseDrag} from './MouseControll/MouseDrag';
-import {CityCamera} from './Camera';
+import {CityCamera} from './CityCamera';
 
 let scene = null;
 

@@ -1,4 +1,4 @@
-import {GROUND} from './constants';
+import {CONFIG} from './config';
 import * as BABYLON from 'babylonjs';
 
 export const setAbsolutePosition = (
@@ -9,9 +9,10 @@ export const setAbsolutePosition = (
     options = {},
 ) => {
     const {isCalcYBounding = false} = options;
+    const {ground} = CONFIG;
     const size = mesh.getBoundingInfo().boundingBox.extendSize;
-    const startX = -GROUND.WIDTH / 2 - size.x;
-    const startZ = -GROUND.HEIGHT / 2 - size.z;
+    const startX = -ground.width / 2 - size.x;
+    const startZ = -ground.height / 2 - size.z;
 
     const x = startX + requireX;
     const y = isCalcYBounding ? size.y + requireY : requireY;
