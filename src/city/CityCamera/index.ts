@@ -108,10 +108,12 @@ export class CityCamera implements ICameraInput<ArcRotateCamera> {
     }
 
     private setBorders() {
-        if (!CONFIG.moveBorders) {
+        const {camera} = CONFIG;
+
+        if (!camera.borders) {
             return;
         }
-        const {maxZ, minZ, maxX, minX} = CONFIG.moveBorders;
+        const {maxZ, minZ, maxX, minX} = camera.borders;
 
         if (this.targetTarget.z >= maxZ) {
             this.targetTarget.z = maxZ;

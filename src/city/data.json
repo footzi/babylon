@@ -1,171 +1,140 @@
 {
     "roads": [
         {
-            "name": 1,
-            "coords": [
+            "id": 1,
+            "items": [
                 {
-                    "x": 10,
-                    "z": 6,
+                    "coords": {"x": 12, "z": 1}
+                },
+                {
+                    "coords": {"x": 11, "z": 1}
+                },
+                {
+                    "coords": {"x": 10, "z": 1}
+                },
+                {
+                    "coords": {"x": 9, "z": 1}
+                },
+                {
+                    "coords": {"x": 8, "z": 1}
+                },
+                {
+                    "coords": {"x": 7, "z": 1}
+                },
+                {
+                    "coords": {"x": 6, "z": 1}
+                },
+                {
+                    "coords": {"x": 5, "z": 1}
+                },
+                {
+                    "coords": {"x": 4, "z": 1}
+                },
+                {
+                    "coords": {"x": 3, "z": 1}
+                },
+                {
+                    "coords": {"x": 2, "z": 1}
+                },
+                {
+                    "coords": {"x": 1, "z": 1},
+                    "isCrossroad": true
+                },
+                {
+                    "coords": {"x": 0, "z": 1}
+                },
+                {
+                    "coords": {"x": -1, "z": 1}
+                },
+                {
+                    "coords": {"x": -2, "z": 1}
+                },
+                {
+                    "coords": {"x": -3, "z": 1}
+                },
+                {
+                    "coords": {"x": -4, "z": 1}
+                },
+                {
+                    "coords": {"x": -5, "z": 1}
+                },
+                {
+                    "coords": {"x": -6, "z": 1}
+                },
+                {
+                    "coords": {"x": -7, "z": 1}
+                },
+                {
+                    "coords": {"x": -8, "z": 1}
+                },
+                {
+                    "coords": {"x": -9, "z": 1}
+                },
+                {
+                    "coords": {"x": -10, "z": 1}
+                },
+                {
+                    "coords": {"x": -11, "z": 1}
+                },
+                {
+                    "coords": {"x": -12, "z": 1}
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "items": [
+                {
+                    "coords": {"x": 1, "z": 6},
+                    "isVertical": true
+                },
+                {
+                    "coords": {"x": 1, "z": 5},
+                    "isVertical": true
+                },
+                {
+                    "coords": {"x": 1, "z": 4},
+                    "isVertical": true
+                },
+                {
+                    "coords": {"x": 1, "z": 3},
+                    "isVertical": true
+                },
+                {
+                    "coords": {"x": 1, "z": 2},
+                    "isVertical": true
+                },
+                {
+                    "coords": {"x": 1, "z": 1},
                     "isVertical": true,
                     "isCrossroad": true
                 },
                 {
-                    "x": 10,
-                    "z": 7,
+                    "coords": {"x": 1, "z": 0},
                     "isVertical": true
                 },
                 {
-                    "x": 10,
-                    "z": 8,
+                    "coords": {"x": 1, "z": -1},
                     "isVertical": true
                 },
                 {
-                    "x": 10,
-                    "z": 9,
+                    "coords": {"x": 1, "z": -2},
                     "isVertical": true
                 },
                 {
-                    "x": 10,
-                    "z": 10,
-                    "isCrossroad": true,
+                    "coords": {"x": 1, "z": -3},
                     "isVertical": true
                 },
                 {
-                    "x": 10,
-                    "z": 11,
+                    "coords": {"x": 1, "z": -4},
                     "isVertical": true
                 },
                 {
-                    "x": 10,
-                    "z": 12,
+                    "coords": {"x": 1, "z": -5},
                     "isVertical": true
-                }
-            ]
-        },
-        {
-            "name": 2,
-            "coords": [
-                {
-                    "x": 8,
-                    "z": 10
-                },
-                {
-                    "x": 9,
-                    "z": 10
-                },
-                {
-                    "x": 10,
-                    "z": 10,
-                    "isCrossroad": true
-                },
-                {
-                    "x": 11,
-                    "z": 10
-                },
-                {
-                    "x": 12,
-                    "z": 10
-                },
-                {
-                    "x": 13,
-                    "z": 10
-                },
-                {
-                    "x": 15,
-                    "z": 10
-                }
-            ]
-        },
-        {
-            "name": 3,
-            "coords": [
-                {
-                    "x": 14,
-                    "z": 1,
+                },{
+                    "coords": {"x": 1, "z": -6},
                     "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 2,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 3,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 4,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 5,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 6,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 7,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 8,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 9,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 10,
-                    "isVertical": true,
-                    "isCrossroad": true
-                },
-                {
-                    "x": 14,
-                    "z": 11,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 12,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 13,
-                    "isVertical": true
-                },
-                {
-                    "x": 14,
-                    "z": 14,
-                    "isVertical": true
-                }
-            ]
-        },
-        {
-            "name": 4,
-            "coords": [
-                {
-                    "x": 11,
-                    "z": 6
-                },
-                {
-                    "x": 12,
-                    "z": 6
-                },
-                {
-                    "x": 13,
-                    "z": 6
                 }
             ]
         }
@@ -193,7 +162,7 @@
     "buildings": [
         {
             "id": 1,
-            "coords": {"x": 0, "y": 0, "z": 0},
+            "coords": {"x": 0, "z": 0},
             "size": {
                 "width": 0.5,
                 "height": 0.5,
@@ -203,29 +172,29 @@
                 "color": "#eb3434"
             }
         },
-      {
-        "id": 2,
-        "coords": {"x": 5, "y": 0, "z": 5},
-        "size": {
-          "width": 1,
-          "height": 0.5,
-          "depth": 0.5
+        {
+            "id": 2,
+            "coords": {"x": 5, "z": 5},
+            "size": {
+                "width": 1,
+                "height": 0.5,
+                "depth": 0.5
+            },
+            "materials": {
+                "color": "#4287f5"
+            }
         },
-        "materials": {
-          "color": "#4287f5"
+        {
+            "id": 3,
+            "coords": {"x": -8, "z": -9},
+            "size": {
+                "width": 0.5,
+                "height": 0.5,
+                "depth": 1
+            },
+            "materials": {
+                "color": "#42f55a"
+            }
         }
-      },
-      {
-        "id": 3,
-        "coords": {"x": -8, "y": 0, "z": -9},
-        "size": {
-          "width": 0.5,
-          "height": 0.5,
-          "depth": 1
-        },
-        "materials": {
-          "color": "#42f55a"
-        }
-      }
     ]
 }

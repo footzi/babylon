@@ -1,7 +1,7 @@
 export interface Coords {
-    x: number;
-    y: number;
-    z: number;
+    x?: number;
+    y?: number;
+    z?: number;
 }
 
 export interface Size {
@@ -19,16 +19,27 @@ export interface CONFIG_TYPE {
         height: number;
         color: string;
     };
-    moveBorders?: {
-        maxX: number;
-        minX: number;
-        maxZ: number;
-        minZ: number;
+    road: {
+        size: number;
+        color: string;
+        markup: {
+            width: number;
+            height: number;
+            color: string;
+            defaultCoords: Coords;
+        };
+        defaultCoords: Coords;
     };
     camera: {
         alpha: number;
         beta: number;
         radius: number;
         panDistanceInfluence: number;
+        borders?: {
+            maxX: number;
+            minX: number;
+            maxZ: number;
+            minZ: number;
+        };
     };
 }

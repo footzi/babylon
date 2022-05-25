@@ -23,7 +23,7 @@ export class Building {
         const {x, z} = coords;
         const y = size.height / 2;
 
-        setPosition(x, y, z, this.building);
+        setPosition({x, y, z}, this.building);
         createAndSetMaterial('buildingMaterial', this.building, {
             diffuseColor: materials.color,
         });

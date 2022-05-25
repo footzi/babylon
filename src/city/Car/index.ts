@@ -1,5 +1,5 @@
 import {Scene, MeshBuilder, Mesh, Animation} from 'babylonjs';
-import {createAndSetMaterial, setAbsolutePosition} from '../utils';
+import {createAndSetMaterial} from '../utils';
 
 import {getAbsolutePosition} from '../utils/getAbsolutePosition';
 import Data from '../data.json';
@@ -23,7 +23,7 @@ export class Car {
     paint() {
         const {coords, materials} = this.options;
 
-        setAbsolutePosition(coords.x, coords.y, coords.z, this.car);
+        // setAbsolutePosition(coords.x, coords.y, coords.z, this.car);
         createAndSetMaterial('carMaterial', this.car, {
             diffuseColor: materials.color,
         });

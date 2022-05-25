@@ -83,7 +83,7 @@ export class City {
         paintGround();
 
         paintBuildings(this.scene);
-        // paintRoads();
+        paintRoads(this.scene);
 
         // const box = BABYLON.MeshBuilder.CreateBox('box', {});
     }
