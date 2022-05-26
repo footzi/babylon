@@ -14,10 +14,7 @@
     "strict": true,
     "types": [
       "node",
-      "jest",
-      "babylonjs",
-      "babylonjs-gui",
-      "babylonjs-materials"
+      "jest"
     ]
   },
   "include": [

@@ -8,7 +8,7 @@ import {
     Scalar,
     Vector2,
     Vector3,
-} from 'babylonjs';
+} from '@babylonjs/core';
 import Hammer from 'hammerjs';
 
 export interface TouchCameraInputInfo {

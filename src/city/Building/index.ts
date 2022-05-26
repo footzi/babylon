@@ -1,44 +1,21 @@
-import {createAndSetMaterial, setPosition} from '../utils';
-import Data from '../data.json';
-import {Mesh, MeshBuilder, Scene} from 'babylonjs';
-import {BuildingData, BuildingOptions} from './interfaces';
+import {Scene} from '@babylonjs/core';
+import {loadModels} from '../utils';
+import {Model} from '../interfaces';
 
 export class Building {
     scene: Scene;
-    building: Mesh;
-    options: BuildingOptions;
+    options: Model;
 
-    constructor(scene: Scene, options: BuildingOptions) {
+    constructor(scene: Scene, options: Model) {
         this.scene = scene;
         this.options = options;
-        this.building = MeshBuilder.CreateBox('Building_' + options.id, {
-            width: options.size.width,
-            depth: options.size.depth,
-            height: options.size.height,
-        });
     }
 
-    paint() {
-        const {coords, size, materials} = this.options;
-        const {x, z} = coords;
-        const y = size.height / 2;
+    async paint() {
+        const {coords, path, rotationCoords} = this.options;
 
-        setPosition({x, y, z}, this.building);
-        createAndSetMaterial('buildingMaterial', this.building, {
-            diffuseColor: materials.color,
-        });
+        await loadModels(path.folder, path.fileName, coords, rotationCoords);
     }
 }
 
-export const paintBuildings = (scene: Scene) => {
-    Data.buildings.forEach((buildingData: BuildingData) => {
-        const building = new Building(scene, {
-            id: buildingData.id,
-            coords: buildingData.coords,
-            size: buildingData.size,
-            materials: buildingData.materials,
-        });
-
-        building.paint();
-    });
-};
+// export * from './interfaces';

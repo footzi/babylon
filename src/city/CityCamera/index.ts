@@ -1,4 +1,4 @@
-import {ArcRotateCamera, ICameraInput, Vector3} from 'babylonjs';
+import {ArcRotateCamera, ICameraInput, Vector3} from '@babylonjs/core';
 import Hammer from 'hammerjs';
 import {CONFIG} from '../config';
 

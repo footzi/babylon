@@ -10,14 +10,27 @@ export interface Size {
     depth: number;
 }
 
+export interface Model {
+    id: number;
+    coords: Coords;
+    rotationCoords?: Coords;
+    path: ModelPath;
+}
+
+export interface ModelPath {
+    folder: string;
+    fileName: string;
+}
+
 export interface CONFIG_TYPE {
-    isDebugLayer?: boolean;
-    isGridCoords?: boolean;
+    isDebug?: boolean;
+    isGrid?: boolean;
     isMouseDrag?: boolean;
     ground: {
         width: number;
         height: number;
         color: string;
+        defaultCoords: Coords;
     };
     road: {
         size: number;

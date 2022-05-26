@@ -1,11 +1,9 @@
-import * as BABYLON from 'babylonjs';
 import {CONFIG} from '../config';
-import Data from '../data.json';
-import {createAndSetMaterial, setPosition, setRotation} from '../utils';
-import {Mesh, MeshBuilder, Scene} from 'babylonjs';
-import {RoadData, RoadOptions} from './interfaces';
+import {setMaterial, setPosition, setRotation} from '../utils';
+import {Mesh, MeshBuilder, Scene} from '@babylonjs/core';
+import {RoadOptions} from './interfaces';
 
-class Road {
+export class Road {
     scene: Scene;
     options: RoadOptions;
 
@@ -29,7 +27,7 @@ class Road {
 
             setPosition({x, y, z}, roadItem);
             setRotation({x: 90}, roadItem);
-            createAndSetMaterial('roadMaterial', roadItem, {
+            setMaterial('roadMaterial', roadItem, {
                 diffuseColor: CONFIG.road.color,
             });
 
@@ -46,7 +44,7 @@ class Road {
     private paintMarkup(roadItem: Mesh) {
         const {road} = CONFIG;
 
-        const markup = BABYLON.MeshBuilder.CreatePlane('roadMarkup', {
+        const markup = MeshBuilder.CreatePlane('roadMarkup', {
             width: road.markup.width,
             height: road.markup.height,
         });
@@ -55,7 +53,7 @@ class Road {
 
         setPosition(road.markup.defaultCoords, markup);
         setRotation({x: 0, y: 0, z: 0}, markup);
-        createAndSetMaterial('roadMarkupMaterial', markup, {
+        setMaterial('roadMarkupMaterial', markup, {
             diffuseColor: road.markup.color,
         });
 
@@ -64,12 +62,4 @@ class Road {
     }
 }
 
-export const paintRoads = (scene: Scene) => {
-    Data.roads.forEach((roadData: RoadData) => {
-        const road = new Road(scene, {
-            ...roadData,
-        });
-
-        road.paint();
-    });
-};
+export * from './interfaces';
