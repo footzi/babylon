@@ -1,36 +1,35 @@
-import {Scene, MeshBuilder, Mesh, Animation} from '@babylonjs/core';
-import {setMaterial} from '../utils';
+import {Scene, Animation, AbstractMesh} from '@babylonjs/core';
+import {loadModels} from '../utils';
 
-import {getAbsolutePosition} from '../utils/getAbsolutePosition';
-import Data from '../data.json';
-import {CarData, CarOptions} from './interfaces';
+import {Model} from '../interfaces';
 
 export class Car {
-    options: CarOptions;
+    options: Model;
     scene: Scene;
-    car: Mesh;
+    car!: AbstractMesh | null;
 
-    constructor(scene: Scene, options: CarOptions) {
+    constructor(scene: Scene, options: Model) {
         this.scene = scene;
         this.options = options;
-        this.car = MeshBuilder.CreateBox(options.name, {
-            width: options.size.width,
-            depth: options.size.depth,
-            height: options.size.height,
-        });
     }
 
-    paint() {
-        const {coords, materials} = this.options;
+    async paint() {
+        const {position, path, rotation, scale} = this.options;
 
-        // setAbsolutePosition(coords.x, coords.y, coords.z, this.car);
-        setMaterial('carMaterial', this.car, {
-            diffuseColor: materials.color,
-        });
+        const model = await loadModels(path, {rotation, position, scale});
+
+        if (model?.meshes[0]) {
+            this.car = model?.meshes[0];
+        }
     }
 
     animation() {
-        const {coords} = this.options;
+        if (!this.options.animation || !this.car) {
+            return;
+        }
+
+        const {position} = this.options;
+        const {coords: startCoords} = position;
         const {endCoords, speedTime} = this.options.animation;
 
         const frames = [];
@@ -46,13 +45,10 @@ export class Car {
             Animation.ANIMATIONLOOPMODE_CYCLE,
         );
 
-        const valueStart = getAbsolutePosition(coords, this.options.size);
-        const valueEnd = getAbsolutePosition(endCoords, this.options.size);
-
         const startCoord =
-            targetProperty === 'position.z' ? valueStart.z : valueStart.x;
+            targetProperty === 'position.z' ? startCoords.z : startCoords.x;
         const endCoord =
-            targetProperty === 'position.z' ? valueEnd.z : valueEnd.x;
+            targetProperty === 'position.z' ? endCoords.z : endCoords.x;
 
         frames.push(
             {
@@ -72,27 +68,3 @@ export class Car {
         this.scene.beginAnimation(this.car, 0, speedTime, true);
     }
 }
-
-export const paintCar = (scene: Scene) => {
-    Data.cars.forEach((carData: CarData) => {
-        const car = new Car(scene, {
-            size: {width: 0.3, depth: 0.5, height: 0.2},
-            coords: carData.coords,
-            animation: {
-                endCoords: {
-                    x: carData.animation.endCoords.x ?? 0,
-                    y: carData.animation.endCoords.y ?? 0,
-                    z: carData.animation.endCoords.z ?? 0,
-                },
-                speedTime: carData.animation.speedTime,
-            },
-            materials: {
-                color: carData.color,
-            },
-            name: carData.name,
-        });
-
-        car.paint();
-        car.animation();
-    });
-};

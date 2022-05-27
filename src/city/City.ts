@@ -6,6 +6,8 @@ import {
     Scene,
     Vector3,
 } from '@babylonjs/core';
+import '@babylonjs/core/Debug/debugLayer';
+import '@babylonjs/inspector';
 import {Ground} from './Ground';
 import {Road, RoadData} from './Road';
 import {CityCamera} from './CityCamera';
@@ -14,6 +16,7 @@ import {Building} from './Building';
 import Data from './data.json';
 import {Grid} from './Grid';
 import {Model} from './interfaces';
+import {Car} from './Car';
 
 export class City {
     canvas: HTMLCanvasElement;
@@ -26,26 +29,31 @@ export class City {
 
         this.scene = this.createScene();
 
+        this.createCamera();
+        this.createLight();
+        this.createModels();
+
         window.addEventListener('resize', () => this.engine.resize());
         this.engine.runRenderLoop(() => this.scene.render());
 
         if (CONFIG.isDebug) {
+            // Удалять из финальной сборки
             this.scene.debugLayer.show();
         }
     }
 
     createScene(): Scene {
-        const scene = new Scene(this.engine);
-
-        this.createCamera();
-        this.createLight();
-        this.createModels();
-
-        return scene;
+        return new Scene(this.engine);
     }
 
     createLight() {
-        new HemisphericLight('light', new Vector3(0, 1, 0), this.scene);
+        const light = new HemisphericLight(
+            'light',
+            new Vector3(0, 1, 0),
+            this.scene,
+        );
+
+        light.intensity = 4;
     }
 
     createCamera() {
@@ -89,6 +97,7 @@ export class City {
         this.paintGround();
         this.paintBuildings();
         this.paintRoads();
+        this.paintCar();
 
         if (CONFIG.isGrid) {
             this.paintGrid();
@@ -120,5 +129,16 @@ export class City {
 
     private paintGrid() {
         new Grid(this.scene).paint();
+    }
+
+    private paintCar() {
+        Data.cars.forEach(async (carData: Model) => {
+            const car = new Car(this.scene, {
+                ...carData,
+            });
+
+            await car.paint();
+            car.animation();
+        });
     }
 }

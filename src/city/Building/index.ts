@@ -12,10 +12,8 @@ export class Building {
     }
 
     async paint() {
-        const {coords, path, rotationCoords} = this.options;
+        const {position, path, rotation} = this.options;
 
-        await loadModels(path.folder, path.fileName, coords, rotationCoords);
+        await loadModels(path, {position, rotation});
     }
 }
-
-// export * from './interfaces';

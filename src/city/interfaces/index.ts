@@ -12,14 +12,34 @@ export interface Size {
 
 export interface Model {
     id: number;
-    coords: Coords;
-    rotationCoords?: Coords;
+    position: ModelPosition;
     path: ModelPath;
+    rotation?: ModelRotation;
+    scale?: ModelScale;
+    animation?: ModelAnimation;
 }
 
 export interface ModelPath {
     folder: string;
     fileName: string;
+}
+
+export interface ModelPosition {
+    coords: Coords;
+}
+
+export interface ModelRotation {
+    coords: Coords;
+}
+
+export interface ModelScale {
+    value?: number;
+    coords?: Coords;
+}
+
+export interface ModelAnimation {
+    endCoords: Coords;
+    speedTime: number;
 }
 
 export interface CONFIG_TYPE {

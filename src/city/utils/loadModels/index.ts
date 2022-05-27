@@ -1,14 +1,15 @@
-import {Coords} from '../../interfaces';
-import {SceneLoader, ISceneLoaderAsyncResult} from '@babylonjs/core';
+import {SceneLoader, ISceneLoaderAsyncResult, Vector3} from '@babylonjs/core';
 import {setPosition, setRotation} from '../index';
+import {LoadModelsOptions} from './interfaces';
+import {ModelPath} from '../../interfaces';
 
 export const loadModels = async (
-    folder: string,
-    fileName: string,
-    coords: Coords,
-    rotationCoords?: Coords,
-    meshNames?: string[],
+    path: ModelPath,
+    options: LoadModelsOptions,
 ): Promise<ISceneLoaderAsyncResult | null> => {
+    const {folder, fileName} = path;
+    const {position, rotation, scale, meshNames} = options;
+
     try {
         const model = await SceneLoader.ImportMeshAsync(
             meshNames,
@@ -19,10 +20,21 @@ export const loadModels = async (
         const mesh = model && model.meshes[0] ? model.meshes[0] : null;
 
         if (mesh) {
-            setPosition(coords, mesh);
+            setPosition(position.coords, mesh);
 
-            if (rotationCoords) {
-                setRotation(rotationCoords, mesh);
+            if (rotation?.coords) {
+                setRotation(rotation.coords, mesh);
+            }
+
+            if (scale) {
+                const {value, coords} = scale;
+                const scaling = scale.value
+                    ? new Vector3(value, value, value)
+                    : new Vector3(coords?.x, coords?.y, coords?.z);
+
+                if (scaling) {
+                    mesh.scaling = scaling;
+                }
             }
         }
 
