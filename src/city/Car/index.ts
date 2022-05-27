@@ -13,17 +13,18 @@ export class Car {
         this.options = options;
     }
 
-    async paint() {
+    public async paint() {
         const {position, path, rotation, scale} = this.options;
 
         const model = await loadModels(path, {rotation, position, scale});
 
         if (model?.meshes[0]) {
             this.car = model?.meshes[0];
+            this.car.receiveShadows = true;
         }
     }
 
-    animation() {
+    public animation() {
         if (!this.options.animation || !this.car) {
             return;
         }
@@ -66,5 +67,9 @@ export class Car {
         this.car.animations.push(animation);
 
         this.scene.beginAnimation(this.car, 0, speedTime, true);
+    }
+
+    public getCar(): AbstractMesh | null {
+        return this.car;
     }
 }

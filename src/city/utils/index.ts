@@ -45,3 +45,14 @@ export const setMaterial = (
 
     return material;
 };
+
+// export const setTexture = () => {
+//     var mat = new StandardMaterial('mat', this.scene);
+//     var texture = new Texture(
+//         './textures/dry_ground_rocks_diff_2k.jpg',
+//         this.scene,
+//     );
+//     mat.diffuseTexture = texture;
+//
+//     this.ground.material = mat;
+// }

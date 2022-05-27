@@ -52,6 +52,9 @@ export interface CONFIG_TYPE {
         color: string;
         defaultCoords: Coords;
     };
+    light: {
+        mapSize: number;
+    };
     road: {
         size: number;
         color: string;

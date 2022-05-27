@@ -6,13 +6,15 @@ import {RoadOptions} from './interfaces';
 export class Road {
     scene: Scene;
     options: RoadOptions;
+    items: Mesh[];
 
     constructor(scene: Scene, options: RoadOptions) {
         this.scene = scene;
         this.options = options;
+        this.items = [];
     }
 
-    paint() {
+    public paint() {
         this.options.items.forEach((item, index) => {
             const roadItem = MeshBuilder.CreatePlane(
                 'roadItem_' + this.options.id + index,
@@ -38,6 +40,9 @@ export class Road {
             if (!isCrossroad) {
                 this.paintMarkup(roadItem);
             }
+
+            roadItem.receiveShadows = true;
+            this.items.push(roadItem);
         });
     }
 
@@ -59,6 +64,10 @@ export class Road {
 
         const copiedPlane = markup.clone('roadMarkupCopied');
         setPosition({...road.markup.defaultCoords, x: 0.25}, copiedPlane);
+    }
+
+    public getRoadItems(): Mesh[] {
+        return this.items;
     }
 }
 

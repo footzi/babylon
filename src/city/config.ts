@@ -2,13 +2,16 @@ import {CONFIG_TYPE} from './interfaces';
 
 export const CONFIG: CONFIG_TYPE = {
     isDebug: true,
-    isGrid: true,
+    // isGrid: true,
     // isMouseDrag: true,
     ground: {
         width: 30,
         height: 20,
         color: '#888844',
         defaultCoords: {y: 0.001},
+    },
+    light: {
+        mapSize: 2048,
     },
     road: {
         size: 1,
