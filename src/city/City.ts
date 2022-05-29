@@ -19,6 +19,8 @@ import Data from './data.json';
 import {Grid} from './Grid';
 import {Model} from './interfaces';
 import {Car} from './Car';
+import {UI} from './UI';
+import {store, todoAdded} from './Store';
 
 export class City {
     canvas: HTMLCanvasElement;
@@ -45,6 +47,18 @@ export class City {
             // Удалять из финальной сборки
             this.scene.debugLayer.show();
         }
+
+        new UI().init('ui');
+
+        console.log(store.getState(), 'state from city');
+
+        store.subscribe(() => {
+            console.log(store.getState(), 'state from city');
+        });
+
+        setTimeout(() => {
+            store.dispatch(todoAdded(1000));
+        }, 1000);
     }
 
     createScene(): Scene {

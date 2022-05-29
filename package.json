@@ -16,11 +16,16 @@
     "@babylonjs/inspector": "5.8.0",
     "@babylonjs/loaders": "5.8.0",
     "@babylonjs/materials": "5.8.0",
+    "@reduxjs/toolkit": "^1.8.2",
     "css-loader": "6.7.1",
     "earcut": "2.2.3",
     "hammerjs": "2.0.8",
     "html-webpack-plugin": "5.5.0",
     "prettier": "2.6.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
     "style-loader": "3.3.1",
     "ts-jest": "28.0.2",
     "webpack": "5.72.0",
@@ -33,10 +38,12 @@
     "@babel/preset-env": "7.17.10",
     "@types/hammerjs": "2.0.41",
     "@types/jest": "27.5.1",
+    "@types/react-dom": "^18.0.5",
     "babel-jest": "28.1.0",
     "babel-loader": "^8.2.5",
     "jest": "28.1.0",
     "ts-loader": "9.3.0",
-    "typescript": "4.6.4"
+    "typescript": "4.6.4",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }

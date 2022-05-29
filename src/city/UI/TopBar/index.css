@@ -1,0 +1,17 @@
+.container {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    background: white;
+    color: black;
+    padding: 8px;
+    z-index: 1;
+}
+
+.list {
+    display: flex;
+}
+
+.list li {
+    margin-right: 16px;
+}
