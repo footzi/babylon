@@ -53,7 +53,12 @@ export interface CONFIG_TYPE {
         defaultCoords: Coords;
     };
     light: {
+        position: Coords;
+        intensity: number;
+    };
+    shadow: {
         mapSize: number;
+        darkness: number;
     };
     road: {
         size: number;
@@ -71,7 +76,12 @@ export interface CONFIG_TYPE {
         beta: number;
         radius: number;
         panDistanceInfluence: number;
+        fov: number;
+        fovRatio: number;
+        betaRatio: number;
         borders?: {
+            minFov: number;
+            maxBeta?: number;
             maxX: number;
             minX: number;
             maxZ: number;

@@ -72,27 +72,29 @@ export class City {
         //     new Vector3(0, 1, 0),
         //     this.scene,
         // );
+        const config = CONFIG.light;
+        const {x, y, z} = config.position;
 
         const light = new DirectionalLight(
             'light',
-            new Vector3(-1, -2, 1),
+            new Vector3(x, y, z),
             this.scene,
         );
 
         light.shadowEnabled = true;
-        light.shadowMinZ = 1;
-        light.shadowMaxZ = 10;
+        light.shadowMinZ = 0;
+        light.shadowMaxZ = 40;
+        light.intensity = config.intensity;
 
         return light;
     }
 
     createShadowGenerator() {
-        const shadowGenerator = new ShadowGenerator(
-            CONFIG.light.mapSize,
-            this.light,
-        );
+        const config = CONFIG.shadow;
+
+        const shadowGenerator = new ShadowGenerator(config.mapSize, this.light);
         shadowGenerator.useBlurCloseExponentialShadowMap = true;
-        shadowGenerator.darkness = 0.5;
+        shadowGenerator.darkness = config.darkness;
 
         return shadowGenerator;
     }
@@ -129,7 +131,7 @@ export class City {
         // const input = new CameraHammerInput();
 
         if (CONFIG.isMouseDrag) {
-            const input = new CityCamera();
+            const input = new CityCamera(this.canvas);
             camera.inputs.add(input);
         }
     }

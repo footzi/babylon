@@ -5,6 +5,8 @@ import {CONFIG} from '../config';
 export class CityCamera implements ICameraInput<ArcRotateCamera> {
     public camera!: ArcRotateCamera;
 
+    private canvas: HTMLCanvasElement;
+
     public panTresholdInPixels = 0;
 
     private startCenterX = 0;
@@ -24,6 +26,12 @@ export class CityCamera implements ICameraInput<ArcRotateCamera> {
     private startTarget = Vector3.Zero();
     private startPosition = Vector3.Zero();
 
+    private targetFov = CONFIG.camera.fov;
+
+    constructor(canvas: HTMLCanvasElement) {
+        this.canvas = canvas;
+    }
+
     public attachControl(noPreventDefault?: boolean) {
         const engine = this.camera.getEngine();
         const element = <EventTarget>engine.getInputElement();
@@ -41,6 +49,15 @@ export class CityCamera implements ICameraInput<ArcRotateCamera> {
                 this.initTargetValues();
             }
         });
+
+        this.canvas.addEventListener('wheel', (e: WheelEvent) => {
+            if (CONFIG.camera.borders) {
+                const deltaY = e.deltaY;
+                this.setFov(deltaY);
+                this.setBeta(deltaY);
+            }
+        });
+
         this.camera.getScene().onBeforeRenderObservable.add(() => {
             this.setBorders();
 
@@ -50,6 +67,7 @@ export class CityCamera implements ICameraInput<ArcRotateCamera> {
             this.camera.alpha = this.targetAlpha;
             this.camera.beta = this.targetBeta;
             this.camera.radius = this.targetRadius;
+            this.camera.fov = this.targetFov;
         });
     }
 
@@ -129,6 +147,54 @@ export class CityCamera implements ICameraInput<ArcRotateCamera> {
 
         if (this.targetTarget.x <= minX) {
             this.targetTarget.x = minX;
+        }
+    }
+
+    // Зум
+    private setFov(deltaY: number) {
+        const {camera} = CONFIG;
+
+        if (!camera.borders) {
+            return;
+        }
+
+        const calcFov = this.targetFov + deltaY / camera.fovRatio;
+
+        if (calcFov < camera.fov && calcFov > camera.borders.minFov) {
+            this.targetFov = calcFov;
+        }
+
+        // сбрасываем к дефолтным значениям если выходит за рамки
+        if (calcFov > camera.fov) {
+            this.targetFov = CONFIG.camera.fov;
+        }
+
+        if (calcFov < camera.borders.minFov) {
+            this.targetFov = camera.borders.minFov;
+        }
+    }
+
+    // Наклон камеры
+    setBeta(deltaY: number) {
+        const {camera} = CONFIG;
+
+        if (!camera.borders?.maxBeta) {
+            return;
+        }
+
+        const calcBeta = this.targetBeta - deltaY / camera.betaRatio;
+
+        if (calcBeta > camera.beta && calcBeta < camera.borders.maxBeta) {
+            this.targetBeta = calcBeta;
+        }
+
+        // сбрасываем к дефолтным значениям если выходит за рамки
+        if (calcBeta < camera.beta) {
+            this.targetBeta = camera.beta;
+        }
+
+        if (calcBeta > camera.borders.maxBeta) {
+            this.targetBeta = camera.borders.maxBeta;
         }
     }
 }

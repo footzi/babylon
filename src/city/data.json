@@ -266,13 +266,23 @@
             }
         },
         {
-            "id": 3,
+            "id": 5,
             "position": {
                 "coords": {"x": 6, "z": 4}
             },
             "path": {
                 "folder": "buildings",
                 "fileName": "small_buildingF.glb"
+            }
+        },
+        {
+            "id": 6,
+            "position": {
+                "coords":{"x": 3, "z": -3}
+            },
+            "path": {
+                "folder": "buildings",
+                "fileName": "large_buildingA.glb"
             }
         }
     ]

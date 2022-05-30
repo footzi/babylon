@@ -1,9 +1,9 @@
 import {CONFIG_TYPE} from './interfaces';
 
 export const CONFIG: CONFIG_TYPE = {
-    // isDebug: true,
+    isDebug: true,
     // isGrid: true,
-    // isMouseDrag: true,
+    isMouseDrag: true,
     ground: {
         width: 30,
         height: 20,
@@ -11,7 +11,12 @@ export const CONFIG: CONFIG_TYPE = {
         defaultCoords: {y: 0.001},
     },
     light: {
+        position: {x: -0.75, y: -2, z: 1},
+        intensity: 1.2,
+    },
+    shadow: {
         mapSize: 2048,
+        darkness: 0.6,
     },
     road: {
         size: 1,
@@ -27,11 +32,21 @@ export const CONFIG: CONFIG_TYPE = {
         },
     },
     camera: {
+        // угол поворта
         alpha: -Math.PI / 2,
+        // угол наклона
         beta: Math.PI / 4,
-        radius: 5,
+        // приблежение / удаление
+        radius: 10,
+        // уровень чувствительности пан
         panDistanceInfluence: 0.1,
+        // зум
+        fov: 1,
+        fovRatio: 250,
+        betaRatio: 300,
         borders: {
+            minFov: 0.5,
+            // maxBeta: 1.3,
             maxX: 8,
             minX: -8,
             maxZ: 4.7,
