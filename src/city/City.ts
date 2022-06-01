@@ -6,6 +6,7 @@ import {
     Scene,
     ShadowGenerator,
     Vector3,
+    MeshBuilder,
 } from '@babylonjs/core';
 import '@babylonjs/core/Debug/debugLayer';
 import '@babylonjs/inspector';
@@ -203,14 +204,36 @@ export class City {
     }
 
     private testClick() {
+        let movedMesh: CityMesh | null = null;
+
+        const box = MeshBuilder.CreateBox(
+            'box',
+            {
+                // параметры для BOX
+                width: 1,
+                height: 1,
+                depth: 1,
+            },
+            this.scene,
+        );
+
+        box.position = new Vector3(9, 0, 5);
+
         this.scene.onPointerDown = function (evt, pickResult) {
-            // We try to pick an object
             const pickedMesh = pickResult.pickedMesh as CityMesh;
-            console.log(evt);
-            console.log(pickedMesh.city);
 
             if (pickedMesh.city?.type === BUILDING_TYPES.LIVING) {
-                pickedMesh.dispose();
+                if (!movedMesh) {
+                    movedMesh = pickedMesh;
+                } else {
+                    movedMesh = null;
+                }
+            }
+        };
+
+        this.scene.onPointerMove = (evt, pickInfo) => {
+            if (movedMesh && pickInfo.pickedPoint) {
+                movedMesh.position = pickInfo.pickedPoint;
             }
         };
     }

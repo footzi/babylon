@@ -1,7 +1,6 @@
-import {Scene, Mesh} from '@babylonjs/core';
+import {Scene} from '@babylonjs/core';
 import {loadModels} from '../utils';
 import {Model, CityMesh, BUILDING_TYPES} from '../interfaces';
-import {mergeMeshes} from '../utils/mergeMeshes';
 
 export class Building {
     scene: Scene;
@@ -16,9 +15,10 @@ export class Building {
     public async paint() {
         const {position, path, rotation} = this.options;
 
-        const model = await loadModels(path, {position, rotation});
-
-        const mesh = mergeMeshes(model?.meshes as Mesh[]);
+        const mesh = await loadModels(path, {
+            position,
+            rotation,
+        });
 
         if (mesh) {
             mesh.city = {

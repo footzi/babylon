@@ -225,10 +225,7 @@
         {
             "id": 1,
             "position": {
-                "coords": {"x": -0.3, "z": -0.3}
-            },
-            "rotation": {
-                "coords": {"y": 90}
+                "coords": {"x": 0, "z": 0}
             },
             "path": {
                 "folder": "buildings",

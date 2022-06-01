@@ -5,4 +5,5 @@ export interface LoadModelsOptions {
     rotation?: ModelRotation;
     scale?: ModelScale;
     meshNames?: string[];
+    isMergeMeshes?: boolean;
 }

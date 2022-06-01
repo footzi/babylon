@@ -15,6 +15,7 @@ export class Ground {
         });
 
         this.ground.receiveShadows = true;
+        // this.ground.enablePointerMoveEvents = true;
     }
 
     public paint() {

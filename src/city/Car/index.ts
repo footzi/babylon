@@ -6,7 +6,7 @@ import {CityMesh, Model} from '../interfaces';
 export class Car {
     options: Model;
     scene: Scene;
-    car!: AbstractMesh | null;
+    car!: CityMesh | null;
 
     constructor(scene: Scene, options: Model) {
         this.scene = scene;
@@ -16,10 +16,15 @@ export class Car {
     public async paint() {
         const {position, path, rotation, scale} = this.options;
 
-        const model = await loadModels(path, {rotation, position, scale});
+        const mesh = await loadModels(path, {
+            rotation,
+            position,
+            scale,
+            isMergeMeshes: false,
+        });
 
-        if (model?.meshes[0]) {
-            this.car = model?.meshes[0];
+        if (mesh) {
+            this.car = mesh;
             this.car.receiveShadows = true;
         }
     }

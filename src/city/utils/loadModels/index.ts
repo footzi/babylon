@@ -1,14 +1,21 @@
-import {SceneLoader, ISceneLoaderAsyncResult, Vector3} from '@babylonjs/core';
+import {SceneLoader, Vector3, Mesh} from '@babylonjs/core';
 import {setPosition, setRotation} from '../index';
 import {LoadModelsOptions} from './interfaces';
-import {ModelPath} from '../../interfaces';
+import {CityMesh, ModelPath} from '../../interfaces';
+import {mergeMeshes} from '../mergeMeshes';
 
 export const loadModels = async (
     path: ModelPath,
     options: LoadModelsOptions,
-): Promise<ISceneLoaderAsyncResult | null> => {
+): Promise<CityMesh | null> => {
     const {folder, fileName} = path;
-    const {position, rotation, scale, meshNames} = options;
+    const {
+        position,
+        rotation,
+        scale,
+        meshNames,
+        isMergeMeshes = true,
+    } = options;
 
     try {
         const model = await SceneLoader.ImportMeshAsync(
@@ -17,7 +24,13 @@ export const loadModels = async (
             fileName,
         );
 
-        const mesh = model && model.meshes[0] ? model.meshes[0] : null;
+        const meshes = model.meshes as Mesh[];
+
+        const mesh = isMergeMeshes
+            ? mergeMeshes(meshes)
+            : model && meshes[0]
+            ? meshes[0]
+            : null;
 
         if (mesh) {
             setPosition(position.coords, mesh);
@@ -38,7 +51,7 @@ export const loadModels = async (
             }
         }
 
-        return model;
+        return mesh;
     } catch (error) {
         console.log(error);
         return null;

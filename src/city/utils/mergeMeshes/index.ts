@@ -22,7 +22,8 @@ export const mergeMeshes = (meshes?: Mesh[]): CityMesh | null => {
         true,
     );
     if (mergeMesh) {
-        mergeMesh.setParent(root);
+        // @ts-ignore
+        root.setParent(mergeMesh);
 
         return mergeMesh;
     } else {
