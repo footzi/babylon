@@ -1,3 +1,6 @@
+import {AbstractMesh} from '@babylonjs/core';
+import {BUILDING_TYPES} from './enums';
+
 export interface Coords {
     x?: number;
     y?: number;
@@ -40,6 +43,12 @@ export interface ModelScale {
 export interface ModelAnimation {
     endCoords: Coords;
     speedTime: number;
+}
+
+export interface CityMesh extends AbstractMesh {
+    city?: {
+        type: BUILDING_TYPES;
+    };
 }
 
 export interface CONFIG_TYPE {
@@ -89,3 +98,5 @@ export interface CONFIG_TYPE {
         };
     };
 }
+
+export * from './enums';

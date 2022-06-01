@@ -1,0 +1,25 @@
+.container {
+    position: fixed;
+    bottom: 14px;
+    right: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: black;
+    padding: 8px;
+    z-index: 1;
+}
+
+.list {
+    display: flex;
+}
+
+.list li {
+    margin-right: 16px;
+    width: 60px;
+    height: 40px;
+    border: 1px solid red;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    padding: 8px;
+}

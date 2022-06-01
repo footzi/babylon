@@ -1,7 +1,7 @@
 import {Scene, Animation, AbstractMesh} from '@babylonjs/core';
 import {loadModels} from '../utils';
 
-import {Model} from '../interfaces';
+import {CityMesh, Model} from '../interfaces';
 
 export class Car {
     options: Model;

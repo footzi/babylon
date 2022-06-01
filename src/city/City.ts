@@ -1,12 +1,11 @@
 import '@babylonjs/loaders/glTF';
 import {
-    HemisphericLight,
     ArcRotateCamera,
+    DirectionalLight,
     Engine,
     Scene,
-    Vector3,
-    DirectionalLight,
     ShadowGenerator,
+    Vector3,
 } from '@babylonjs/core';
 import '@babylonjs/core/Debug/debugLayer';
 import '@babylonjs/inspector';
@@ -17,10 +16,8 @@ import {CONFIG} from './config';
 import {Building} from './Building';
 import Data from './data.json';
 import {Grid} from './Grid';
-import {Model} from './interfaces';
+import {BUILDING_TYPES, CityMesh, Model} from './interfaces';
 import {Car} from './Car';
-import {UI} from './UI';
-import {store, todoAdded} from './Store';
 
 export class City {
     canvas: HTMLCanvasElement;
@@ -40,6 +37,8 @@ export class City {
         this.createCamera();
         this.createModels();
 
+        this.testClick();
+
         window.addEventListener('resize', () => this.engine.resize());
         this.engine.runRenderLoop(() => this.scene.render());
 
@@ -48,17 +47,17 @@ export class City {
             this.scene.debugLayer.show();
         }
 
-        new UI().init('ui');
-
-        console.log(store.getState(), 'state from city');
-
-        store.subscribe(() => {
-            console.log(store.getState(), 'state from city');
-        });
-
-        setTimeout(() => {
-            store.dispatch(todoAdded(1000));
-        }, 1000);
+        // new UI().init('ui');
+        //
+        // console.log(store.getState(), 'state from city');
+        //
+        // store.subscribe(() => {
+        //     console.log(store.getState(), 'state from city');
+        // });
+        //
+        // setTimeout(() => {
+        //     store.dispatch(todoAdded(1000));
+        // }, 1000);
     }
 
     createScene(): Scene {
@@ -201,5 +200,18 @@ export class City {
                 this.shadowGenerator.addShadowCaster(mesh);
             }
         });
+    }
+
+    private testClick() {
+        this.scene.onPointerDown = function (evt, pickResult) {
+            // We try to pick an object
+            const pickedMesh = pickResult.pickedMesh as CityMesh;
+            console.log(evt);
+            console.log(pickedMesh.city);
+
+            if (pickedMesh.city?.type === BUILDING_TYPES.LIVING) {
+                pickedMesh.dispose();
+            }
+        };
     }
 }

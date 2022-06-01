@@ -1,17 +1,12 @@
-import {
-    PointLight,
-    Scene,
-    Vector3,
-    Color3,
-    AbstractMesh,
-} from '@babylonjs/core';
+import {Scene, Mesh} from '@babylonjs/core';
 import {loadModels} from '../utils';
-import {Model} from '../interfaces';
+import {Model, CityMesh, BUILDING_TYPES} from '../interfaces';
+import {mergeMeshes} from '../utils/mergeMeshes';
 
 export class Building {
     scene: Scene;
     options: Model;
-    building!: AbstractMesh | null;
+    building!: CityMesh | null;
 
     constructor(scene: Scene, options: Model) {
         this.scene = scene;
@@ -23,8 +18,14 @@ export class Building {
 
         const model = await loadModels(path, {position, rotation});
 
-        if (model?.meshes[0]) {
-            this.building = model.meshes[0];
+        const mesh = mergeMeshes(model?.meshes as Mesh[]);
+
+        if (mesh) {
+            mesh.city = {
+                type: BUILDING_TYPES.LIVING,
+            };
+
+            this.building = mesh;
         }
 
         // const pointLight = new PointLight(
@@ -41,7 +42,7 @@ export class Building {
         // }
     }
 
-    public getBuilding(): AbstractMesh | null {
+    public getBuilding(): CityMesh | null {
         return this.building;
     }
 }
