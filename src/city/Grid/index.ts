@@ -15,11 +15,15 @@ export class Grid {
         });
     }
 
-    paint() {
+    public paint() {
         const gridMaterial = new GridMaterial('gridMaterial');
         gridMaterial.gridRatio = 1;
         this.ground.material = gridMaterial;
 
         setPosition({y: CONFIG.ground.defaultCoords.y}, this.ground);
+    }
+
+    public remove() {
+        this.ground.dispose();
     }
 }

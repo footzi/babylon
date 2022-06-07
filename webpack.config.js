@@ -54,6 +54,9 @@ module.exports = {
         static: {
             directory: path.join(__dirname, 'public'),
         },
+        client: {
+            overlay: false,
+        },
         port: 3000,
     },
     plugins: [new HtmlWebpackPlugin({template: './src/index.html'})],

@@ -1,7 +1,7 @@
 import {CONFIG_TYPE} from './interfaces';
 
 export const CONFIG: CONFIG_TYPE = {
-    isDebug: true,
+    // isDebug: true,
     // isGrid: true,
     isMouseDrag: true,
     ground: {

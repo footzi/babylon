@@ -1,25 +1,17 @@
 import {
     configureStore,
+    createSlice,
     PayloadAction,
-    Store as ReduxStore,
     Slice,
+    Store as ReduxStore,
 } from '@reduxjs/toolkit';
 
-import {todoAddedReducer} from './reducers';
+import {addModelReducer, setIsStartBuildingReducer} from './reducers';
 
-import {createSlice} from '@reduxjs/toolkit';
-
-export interface State {
-    test: number[];
-}
-
-export const initialState: State = {
-    test: [],
-};
-
-export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;
+import {initialState} from './initialState';
+import {LocalStorage} from '../utils/localStorage';
+import {LOCAL_STORAGE_KEYS, Model2} from '../interfaces';
+import {State} from './interfaces';
 
 export class Store {
     store: ReduxStore;
@@ -28,15 +20,26 @@ export class Store {
     constructor() {
         this.slice = createSlice({
             name: 'app',
-            initialState,
+            initialState: this.getInitialState(),
             reducers: {
-                todoAdded: todoAddedReducer,
+                setIsStartBuilding: setIsStartBuildingReducer,
+                addModel: addModelReducer,
             },
         });
 
         this.store = configureStore({
             reducer: this.slice.reducer,
         });
+    }
+
+    private getInitialState(): State {
+        const models =
+            LocalStorage.get<Model2[]>(LOCAL_STORAGE_KEYS.MODELS) ?? [];
+
+        return {
+            ...initialState,
+            models,
+        };
     }
 
     public getStore() {
@@ -47,7 +50,7 @@ export class Store {
         return this.slice.actions;
     }
 
-    public getState() {
+    public getState(): State {
         return this.store.getState();
     }
 
@@ -62,4 +65,6 @@ export class Store {
 
 export const store = new Store();
 
-export const {todoAdded} = store.getActions();
+export const {setIsStartBuilding, addModel} = store.getActions();
+
+export * from './interfaces';

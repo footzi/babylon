@@ -13,6 +13,24 @@ export interface Size {
     depth: number;
 }
 
+export interface Model2 {
+    type: BUILDING_TYPES;
+    path: ModelPath;
+    position?: ModelPosition;
+    rotation?: ModelRotation;
+    scale?: ModelScale;
+}
+
+// export interface StateModel {
+//     type: BUILDING_TYPES;
+//     position?: ModelPosition;
+// }
+
+// export interface CreatingBuilding {
+//     model: Model2;
+//     coords: ElementSize | null;
+// }
+
 export interface Model {
     id: number;
     position: ModelPosition;
@@ -49,6 +67,13 @@ export interface CityMesh extends AbstractMesh {
     city?: {
         type: BUILDING_TYPES;
     };
+}
+
+export interface ElementSize {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
 }
 
 export interface CONFIG_TYPE {

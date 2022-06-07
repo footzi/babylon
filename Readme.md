@@ -32,7 +32,9 @@ https://playground.babylonjs.com/#0XYMA9#107
 Сетка
 https://www.babylonjs-playground.com/#1UFGZH#12
 
-
 Фикс рута из импорта блендера
 https://www.youtube.com/watch?v=BSqxoQ-at24&t=232s&ab_channel=Babylonjs
+
+Расчет положения меша и добавления в html
+https://playground.babylonjs.com/#DWPQ9R#240
 

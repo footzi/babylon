@@ -33,7 +33,9 @@ export const loadModels = async (
             : null;
 
         if (mesh) {
-            setPosition(position.coords, mesh);
+            if (position?.coords) {
+                setPosition(position.coords, mesh);
+            }
 
             if (rotation?.coords) {
                 setRotation(rotation.coords, mesh);

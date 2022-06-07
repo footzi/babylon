@@ -1,13 +1,13 @@
-import {Scene} from '@babylonjs/core';
+import {Scene, Vector3} from '@babylonjs/core';
 import {loadModels} from '../utils';
-import {Model, CityMesh, BUILDING_TYPES} from '../interfaces';
+import {CityMesh, BUILDING_TYPES, Model2, ModelPosition} from '../interfaces';
 
 export class Building {
     scene: Scene;
-    options: Model;
+    options: Model2;
     building!: CityMesh | null;
 
-    constructor(scene: Scene, options: Model) {
+    constructor(scene: Scene, options: Model2) {
         this.scene = scene;
         this.options = options;
     }
@@ -42,7 +42,25 @@ export class Building {
         // }
     }
 
-    public getBuilding(): CityMesh | null {
+    public setPosition(position: Vector3) {
+        if (this.building) {
+            this.building.position = position;
+        }
+    }
+
+    public getMesh(): CityMesh | null {
         return this.building;
+    }
+
+    public getPositionCoords(): ModelPosition {
+        const position = this.building?.position;
+
+        return {
+            coords: {x: position?.x, y: position?.y, z: position?.x},
+        };
+    }
+
+    public remove() {
+        this.building?.dispose();
     }
 }

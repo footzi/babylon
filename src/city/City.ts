@@ -3,10 +3,10 @@ import {
     ArcRotateCamera,
     DirectionalLight,
     Engine,
+    MeshBuilder,
     Scene,
     ShadowGenerator,
     Vector3,
-    MeshBuilder,
 } from '@babylonjs/core';
 import '@babylonjs/core/Debug/debugLayer';
 import '@babylonjs/inspector';
@@ -17,15 +17,22 @@ import {CONFIG} from './config';
 import {Building} from './Building';
 import Data from './data.json';
 import {Grid} from './Grid';
-import {BUILDING_TYPES, CityMesh, Model} from './interfaces';
+import {CityMesh, ElementSize, EVENTS, Model, Model2} from './interfaces';
 import {Car} from './Car';
+import {ui} from './UI';
+import {store} from './Store';
+import {getPositionMesh} from './utils/getPositionMesh';
+import {ModelsBuilder} from './Builders/Models';
 
 export class City {
     canvas: HTMLCanvasElement;
     engine: Engine;
     scene: Scene;
+    camera: ArcRotateCamera;
     light: DirectionalLight;
+    grid!: Grid;
     shadowGenerator: ShadowGenerator;
+    modelsBuilder: ModelsBuilder;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -35,10 +42,7 @@ export class City {
         this.light = this.createLight();
         this.shadowGenerator = this.createShadowGenerator();
 
-        this.createCamera();
-        this.createModels();
-
-        this.testClick();
+        this.camera = this.createCamera();
 
         window.addEventListener('resize', () => this.engine.resize());
         this.engine.runRenderLoop(() => this.scene.render());
@@ -48,17 +52,29 @@ export class City {
             this.scene.debugLayer.show();
         }
 
-        // new UI().init('ui');
-        //
-        // console.log(store.getState(), 'state from city');
-        //
-        // store.subscribe(() => {
-        //     console.log(store.getState(), 'state from city');
-        // });
-        //
-        // setTimeout(() => {
-        //     store.dispatch(todoAdded(1000));
-        // }, 1000);
+        ui.init('ui', this.canvas);
+
+        this.modelsBuilder = new ModelsBuilder(
+            this.scene,
+            this.engine,
+            this.camera,
+        );
+
+        this.modelsBuilder.init();
+
+        ui.addEventListener(EVENTS.START_BUILDING, () => {
+            this.paintGrid();
+        });
+
+        ui.addEventListener(EVENTS.ADD_BUILDING, () => {
+            this.removeGrid();
+        });
+
+        ui.addEventListener(EVENTS.CANCEL_BUILDING, () => {
+            this.removeGrid();
+        });
+
+        this.createModels();
     }
 
     createScene(): Scene {
@@ -134,17 +150,19 @@ export class City {
             const input = new CityCamera(this.canvas);
             camera.inputs.add(input);
         }
+
+        return camera;
     }
 
     createModels() {
         this.paintGround();
         this.paintBuildings();
-        this.paintRoads();
-        this.paintCar();
-
-        if (CONFIG.isGrid) {
-            this.paintGrid();
-        }
+        // this.paintRoads();
+        // this.paintCar();
+        //
+        // if (CONFIG.isGrid) {
+        //     this.paintGrid();
+        // }
     }
 
     private paintGround() {
@@ -153,18 +171,10 @@ export class City {
     }
 
     private paintBuildings() {
-        Data.buildings.forEach(async (buildingData: Model) => {
-            const building = new Building(this.scene, {
-                ...buildingData,
-            });
+        const models = store.getState().models;
 
-            await building.paint();
-
-            const mesh = building.getBuilding();
-
-            if (mesh) {
-                this.shadowGenerator.addShadowCaster(mesh);
-            }
+        models.forEach((model) => {
+            this.modelsBuilder.paint(model);
         });
     }
     private paintRoads() {
@@ -183,7 +193,12 @@ export class City {
     }
 
     private paintGrid() {
-        new Grid(this.scene).paint();
+        this.grid = new Grid(this.scene);
+        this.grid.paint();
+    }
+
+    private removeGrid() {
+        this.grid.remove();
     }
 
     private paintCar() {
@@ -203,13 +218,10 @@ export class City {
         });
     }
 
-    private testClick() {
-        let movedMesh: CityMesh | null = null;
-
+    private create() {
         const box = MeshBuilder.CreateBox(
             'box',
             {
-                // параметры для BOX
                 width: 1,
                 height: 1,
                 depth: 1,
@@ -217,24 +229,6 @@ export class City {
             this.scene,
         );
 
-        box.position = new Vector3(9, 0, 5);
-
-        this.scene.onPointerDown = function (evt, pickResult) {
-            const pickedMesh = pickResult.pickedMesh as CityMesh;
-
-            if (pickedMesh.city?.type === BUILDING_TYPES.LIVING) {
-                if (!movedMesh) {
-                    movedMesh = pickedMesh;
-                } else {
-                    movedMesh = null;
-                }
-            }
-        };
-
-        this.scene.onPointerMove = (evt, pickInfo) => {
-            if (movedMesh && pickInfo.pickedPoint) {
-                movedMesh.position = pickInfo.pickedPoint;
-            }
-        };
+        return box;
     }
 }
