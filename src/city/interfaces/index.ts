@@ -16,6 +16,8 @@ export interface Size {
 export interface Model2 {
     type: BUILDING_TYPES;
     path: ModelPath;
+    name: string;
+    id: string;
     position?: ModelPosition;
     rotation?: ModelRotation;
     scale?: ModelScale;
@@ -65,7 +67,7 @@ export interface ModelAnimation {
 
 export interface CityMesh extends AbstractMesh {
     city?: {
-        type: BUILDING_TYPES;
+        id: string;
     };
 }
 

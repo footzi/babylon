@@ -1,6 +1,8 @@
 import {ArcRotateCamera, ICameraInput, Vector3} from '@babylonjs/core';
 import Hammer from 'hammerjs';
 import {CONFIG} from '../config';
+import {ui} from '../UI';
+import {EVENTS} from '../interfaces';
 
 export class CityCamera implements ICameraInput<ArcRotateCamera> {
     public camera!: ArcRotateCamera;
@@ -100,6 +102,8 @@ export class CityCamera implements ICameraInput<ArcRotateCamera> {
 
         this.targetPosition.x = this.startPosition.x + x2;
         this.targetPosition.z = this.startPosition.z + y2;
+
+        ui.dispatchEvent(EVENTS.PAN_CANVAS);
     }
 
     public getClassName(): string {
@@ -172,6 +176,8 @@ export class CityCamera implements ICameraInput<ArcRotateCamera> {
         if (calcFov < camera.borders.minFov) {
             this.targetFov = camera.borders.minFov;
         }
+
+        ui.dispatchEvent(EVENTS.ZOOM_CANVAS);
     }
 
     // Наклон камеры

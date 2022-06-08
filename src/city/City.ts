@@ -14,14 +14,12 @@ import {Ground} from './Ground';
 import {Road, RoadData} from './Road';
 import {CityCamera} from './CityCamera';
 import {CONFIG} from './config';
-import {Building} from './Building';
 import Data from './data.json';
 import {Grid} from './Grid';
 import {CityMesh, ElementSize, EVENTS, Model, Model2} from './interfaces';
 import {Car} from './Car';
 import {ui} from './UI';
 import {store} from './Store';
-import {getPositionMesh} from './utils/getPositionMesh';
 import {ModelsBuilder} from './Builders/Models';
 
 export class City {
@@ -71,6 +69,18 @@ export class City {
         });
 
         ui.addEventListener(EVENTS.CANCEL_BUILDING, () => {
+            this.removeGrid();
+        });
+
+        ui.addEventListener(EVENTS.START_MOVING_MODEL, () => {
+            this.paintGrid();
+        });
+
+        ui.addEventListener(EVENTS.CANCEL_MOVING_MODEL, () => {
+            this.removeGrid();
+        });
+
+        ui.addEventListener(EVENTS.END_MOVING_MODEL, () => {
             this.removeGrid();
         });
 

@@ -5,13 +5,20 @@ import {
     Slice,
     Store as ReduxStore,
 } from '@reduxjs/toolkit';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 
-import {addModelReducer, setIsStartBuildingReducer} from './reducers';
+import {
+    addModelReducer,
+    changeModelReducer,
+    removeModelReducer,
+    setIsMovingModelReducer,
+    setIsStartBuildingReducer,
+} from './reducers';
 
 import {initialState} from './initialState';
 import {LocalStorage} from '../utils/localStorage';
 import {LOCAL_STORAGE_KEYS, Model2} from '../interfaces';
-import {State} from './interfaces';
+import {State, AppDispatch, RootState} from './interfaces';
 
 export class Store {
     store: ReduxStore;
@@ -23,7 +30,10 @@ export class Store {
             initialState: this.getInitialState(),
             reducers: {
                 setIsStartBuilding: setIsStartBuildingReducer,
+                setIsMovingModel: setIsMovingModelReducer,
                 addModel: addModelReducer,
+                removeModel: removeModelReducer,
+                changeModel: changeModelReducer,
             },
         });
 
@@ -65,6 +75,16 @@ export class Store {
 
 export const store = new Store();
 
-export const {setIsStartBuilding, addModel} = store.getActions();
+export const {
+    addModel,
+    setIsMovingModel,
+    setIsStartBuilding,
+    removeModel,
+    changeModel,
+} = store.getActions();
 
 export * from './interfaces';
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

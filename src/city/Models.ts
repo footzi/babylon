@@ -1,10 +1,11 @@
-import {BUILDING_TYPES} from './interfaces';
+import {BUILDING_TYPES, Model2} from './interfaces';
 
 /**
  * Тут храним данные о моделях
  */
-export const Models = {
+export const Models: Record<BUILDING_TYPES, Model2> = {
     [BUILDING_TYPES.LIVING]: {
+        id: '',
         type: BUILDING_TYPES.LIVING,
         name: 'Домик',
         path: {
@@ -13,6 +14,7 @@ export const Models = {
         },
     },
     [BUILDING_TYPES.MARKET]: {
+        id: '',
         type: BUILDING_TYPES.MARKET,
         name: 'Рынок',
         path: {

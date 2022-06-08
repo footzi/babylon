@@ -1,25 +1,43 @@
 import React, {useCallback, useEffect, useRef} from 'react';
 import styles from './index.css';
-import {useDispatch, useSelector} from 'react-redux';
 import {ui} from '../index';
 import {ElementSize, EVENTS} from '../../interfaces';
-import {setIsStartBuilding, State} from '../../Store';
+import {
+    setIsMovingModel,
+    setIsStartBuilding,
+    useAppSelector,
+    useAppDispatch,
+} from '../../Store';
 
 export const BuildingControls = () => {
-    const {isStartBuilding} = useSelector((state: State) => state);
-    const dispatch = useDispatch();
+    const {isStartBuilding, isMovingModel} = useAppSelector((state) => state);
+    const dispatch = useAppDispatch();
 
     const elementRef = useRef<HTMLDivElement>(null);
 
     const onOk = useCallback(() => {
-        ui.dispatchEvent(EVENTS.ADD_BUILDING);
-        dispatch(setIsStartBuilding(false));
-    }, []);
+        if (isStartBuilding) {
+            ui.dispatchEvent(EVENTS.ADD_BUILDING);
+            dispatch(setIsStartBuilding(false));
+        }
+
+        if (isMovingModel) {
+            ui.dispatchEvent(EVENTS.END_MOVING_MODEL);
+            dispatch(setIsMovingModel(false));
+        }
+    }, [isStartBuilding, isMovingModel]);
 
     const onNOT = useCallback(() => {
-        ui.dispatchEvent(EVENTS.CANCEL_BUILDING);
-        dispatch(setIsStartBuilding(false));
-    }, []);
+        if (isStartBuilding) {
+            ui.dispatchEvent(EVENTS.CANCEL_BUILDING);
+            dispatch(setIsStartBuilding(false));
+        }
+
+        if (isMovingModel) {
+            ui.dispatchEvent(EVENTS.CANCEL_MOVING_MODEL);
+            dispatch(setIsMovingModel(false));
+        }
+    }, [isStartBuilding, isMovingModel]);
 
     const changePosition = useCallback((coords: ElementSize) => {
         if (elementRef?.current) {
@@ -37,7 +55,7 @@ export const BuildingControls = () => {
         return () => ui.removeEventListener(changePosition);
     }, []);
 
-    if (!isStartBuilding) {
+    if (!isStartBuilding && !isMovingModel) {
         return null;
     }
 

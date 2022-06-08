@@ -2,6 +2,7 @@ import React from 'react';
 import {TopBar} from './TopBar';
 import {BuildingBar} from './BuildingBar';
 import {BuildingControls} from './BuildingControls';
+import {ModelInfo} from './ModelInfo';
 
 export const App: React.FC = () => {
     return (
@@ -9,6 +10,7 @@ export const App: React.FC = () => {
             <TopBar />
             <BuildingBar />
             <BuildingControls />
+            <ModelInfo />
         </>
     );
 };

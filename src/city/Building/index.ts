@@ -5,11 +5,13 @@ import {CityMesh, BUILDING_TYPES, Model2, ModelPosition} from '../interfaces';
 export class Building {
     scene: Scene;
     options: Model2;
+    id: string;
     building!: CityMesh | null;
 
     constructor(scene: Scene, options: Model2) {
         this.scene = scene;
         this.options = options;
+        this.id = options.id;
     }
 
     public async paint() {
@@ -20,9 +22,9 @@ export class Building {
             rotation,
         });
 
-        if (mesh) {
+        if (mesh && this.options.id) {
             mesh.city = {
-                type: BUILDING_TYPES.LIVING,
+                id: this.id,
             };
 
             this.building = mesh;
@@ -56,8 +58,12 @@ export class Building {
         const position = this.building?.position;
 
         return {
-            coords: {x: position?.x, y: position?.y, z: position?.x},
+            coords: {x: position?.x, y: position?.y, z: position?.z},
         };
+    }
+
+    public getCoords(): Vector3 {
+        return this.building?.position ?? new Vector3(0, 0, 0);
     }
 
     public remove() {

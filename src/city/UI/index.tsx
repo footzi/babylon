@@ -52,6 +52,7 @@ class UI {
         this.observers.forEach((observer) => {
             if (observer.event === event) {
                 observer.callback(payload);
+                console.log(`%c%O ${event}`, 'color: #4287f5', payload);
             }
         });
     }
