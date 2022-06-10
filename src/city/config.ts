@@ -11,7 +11,7 @@ export const CONFIG: CONFIG_TYPE = {
         defaultCoords: {y: 0.001},
     },
     light: {
-        position: {x: -0.75, y: -2, z: 1},
+        position: {x: 1, y: -2.5, z: 0.5},
         intensity: 1.2,
     },
     shadow: {

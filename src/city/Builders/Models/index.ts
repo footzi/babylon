@@ -3,10 +3,17 @@ import {
     Engine,
     PickingInfo,
     Scene,
+    ShadowGenerator,
     Vector3,
 } from '@babylonjs/core';
 import {v4} from 'uuid';
-import {CityMesh, ElementSize, EVENTS, Model2} from '../../interfaces';
+import {
+    BUILDING_TYPES,
+    CityMesh,
+    ElementSize,
+    EVENTS,
+    Model2,
+} from '../../interfaces';
 import {Building} from '../../Building';
 import {getPositionMesh} from '../../utils/getPositionMesh';
 import {ui} from '../../UI';
@@ -14,11 +21,12 @@ import {addModel, changeModel, removeModel, store} from '../../Store';
 
 export class ModelsBuilder {
     scene: Scene;
-    buildingModel: Model2 | null;
+    buildingModel!: Model2 | null;
     building: Building | null;
     buildings: Building[];
     engine: Engine;
     camera: ArcRotateCamera;
+    shadowGenerator: ShadowGenerator;
     // Строительство
     isBuilding: boolean;
     // Перемещение
@@ -26,10 +34,16 @@ export class ModelsBuilder {
     // Начальные координаты перемешения
     startedMovingCoords: Vector3 | null;
 
-    constructor(scene: Scene, engine: Engine, camera: ArcRotateCamera) {
+    constructor(
+        scene: Scene,
+        engine: Engine,
+        camera: ArcRotateCamera,
+        shadowGenerator: ShadowGenerator,
+    ) {
         this.scene = scene;
         this.engine = engine;
         this.camera = camera;
+        this.shadowGenerator = shadowGenerator;
 
         this.buildingModel = null;
         this.building = null;
@@ -41,7 +55,9 @@ export class ModelsBuilder {
 
     public init() {
         ui.addEventListener<Model2>(EVENTS.START_BUILDING, (payload) => {
-            this.startBuilding(payload);
+            if (payload.type !== BUILDING_TYPES.ROAD_ITEM) {
+                this.startBuilding(payload);
+            }
         });
 
         ui.addEventListener(EVENTS.ADD_BUILDING, () => {
@@ -76,6 +92,13 @@ export class ModelsBuilder {
             this.recalcPosition(),
         );
 
+        // @todo костыль для перерасчета позиции окна при перемешении по канвасу
+        ui.addEventListener<Model2>(
+            EVENTS.CLOSE_INFO_WINDOW,
+            () => (this.building = null),
+        );
+
+        // @todo переделать на  this.scene.onPointerObservable.add(
         this.scene.onPointerMove = (event, pickedInfo) => {
             if (pickedInfo.pickedPoint) {
                 this.moving(pickedInfo.pickedPoint);
@@ -88,9 +111,15 @@ export class ModelsBuilder {
         };
     }
 
-    public paint(model: Model2): Building {
+    public async paint(model: Model2): Promise<Building> {
         const building = new Building(this.scene, model);
-        building.paint();
+        await building.paint();
+
+        const mesh = building.getMesh();
+
+        if (mesh) {
+            this.shadowGenerator.addShadowCaster(mesh);
+        }
 
         this.buildings.push(building);
 
@@ -148,13 +177,13 @@ export class ModelsBuilder {
         this.isBuilding = false;
     }
 
-    private startBuilding(model: Model2) {
+    private async startBuilding(model: Model2) {
         this.isBuilding = true;
         this.buildingModel = {
             ...model,
             id: v4(),
         };
-        this.building = this.paint(this.buildingModel);
+        this.building = await this.paint(this.buildingModel);
     }
 
     private endBuilding() {

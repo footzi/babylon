@@ -17,6 +17,10 @@ export class Building {
     public async paint() {
         const {position, path, rotation} = this.options;
 
+        if (!path) {
+            return;
+        }
+
         const mesh = await loadModels(path, {
             position,
             rotation,

@@ -15,12 +15,18 @@ export interface Size {
 
 export interface Model2 {
     type: BUILDING_TYPES;
-    path: ModelPath;
+    path?: ModelPath;
     name: string;
     id: string;
     position?: ModelPosition;
     rotation?: ModelRotation;
     scale?: ModelScale;
+    meshParams?: MeshModelParams;
+}
+
+export interface MeshModelParams {
+    size: number;
+    color: string;
 }
 
 // export interface StateModel {

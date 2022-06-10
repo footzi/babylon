@@ -32,6 +32,7 @@ export const ModelInfo = () => {
 
     const onClose = () => {
         setData(null);
+        ui.dispatchEvent(EVENTS.CLOSE_INFO_WINDOW);
     };
 
     const onMove = () => {

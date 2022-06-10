@@ -21,6 +21,7 @@ import {Car} from './Car';
 import {ui} from './UI';
 import {store} from './Store';
 import {ModelsBuilder} from './Builders/Models';
+import {RoadBuilder} from './Builders/Road';
 
 export class City {
     canvas: HTMLCanvasElement;
@@ -31,6 +32,7 @@ export class City {
     grid!: Grid;
     shadowGenerator: ShadowGenerator;
     modelsBuilder: ModelsBuilder;
+    roadBuilder: RoadBuilder;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -56,9 +58,12 @@ export class City {
             this.scene,
             this.engine,
             this.camera,
+            this.shadowGenerator,
         );
-
         this.modelsBuilder.init();
+
+        this.roadBuilder = new RoadBuilder(this.scene);
+        this.roadBuilder.init();
 
         ui.addEventListener(EVENTS.START_BUILDING, () => {
             this.paintGrid();
@@ -183,8 +188,8 @@ export class City {
     private paintBuildings() {
         const models = store.getState().models;
 
-        models.forEach((model) => {
-            this.modelsBuilder.paint(model);
+        models.forEach(async (model) => {
+            await this.modelsBuilder.paint(model);
         });
     }
     private paintRoads() {
