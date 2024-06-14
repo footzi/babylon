@@ -62,7 +62,11 @@ export class City {
         );
         this.modelsBuilder.init();
 
-        this.roadBuilder = new RoadBuilder(this.scene);
+        this.roadBuilder = new RoadBuilder(
+            this.scene,
+            this.engine,
+            this.camera,
+        );
         this.roadBuilder.init();
 
         ui.addEventListener(EVENTS.START_BUILDING, () => {

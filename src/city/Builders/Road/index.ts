@@ -1,6 +1,8 @@
 import {ui} from '../../UI';
-import {BUILDING_TYPES, EVENTS, Model2} from '../../interfaces';
+import {BUILDING_TYPES, ElementSize, EVENTS, Model2} from '../../interfaces';
 import {
+    ArcRotateCamera,
+    Engine,
     Mesh,
     MeshBuilder,
     PointerEventTypes,
@@ -9,15 +11,22 @@ import {
 } from '@babylonjs/core';
 import {v4} from 'uuid';
 import {setMaterial, setPosition, setRotation} from '../../utils';
+import {getPositionMesh} from '../../utils/getPositionMesh';
 
 export class RoadBuilder {
     scene: Scene;
+    engine: Engine;
+    camera: ArcRotateCamera;
     roadModel!: Model2;
-    roadItem!: Mesh;
+    cursorItem: Mesh | null;
     roadItems: Mesh[];
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, engine: Engine, camera: ArcRotateCamera) {
         this.scene = scene;
+        this.engine = engine;
+        this.camera = camera;
+
+        this.cursorItem = null;
         this.roadItems = [];
     }
 
@@ -26,6 +35,10 @@ export class RoadBuilder {
             if (payload.type === BUILDING_TYPES.ROAD_ITEM) {
                 this.startBuilding(payload);
             }
+        });
+
+        ui.addEventListener(EVENTS.CANCEL_BUILDING, () => {
+            this.cancelBuilding();
         });
 
         this.scene.onPointerObservable.add((pointerInfo, pickedInfo) => {
@@ -53,7 +66,7 @@ export class RoadBuilder {
         const item = this.paint();
 
         if (item) {
-            this.roadItem = item;
+            this.cursorItem = item;
         }
     }
 
@@ -78,13 +91,13 @@ export class RoadBuilder {
     }
 
     move(pickedPoint: Vector3) {
-        if (this.roadItem) {
+        if (this.cursorItem) {
             this.moveTo(pickedPoint);
         }
     }
 
     moveTo(pickedPoint: Vector3) {
-        if (!this.roadModel.meshParams) {
+        if (!this.roadModel.meshParams || !this.cursorItem) {
             return;
         }
 
@@ -94,16 +107,45 @@ export class RoadBuilder {
         const z = Math.round(pickedPoint.z) - size;
         const y = 0.002;
 
-        this.roadItem.position = new Vector3(x, y, z);
+        this.cursorItem.position = new Vector3(x, y, z);
     }
 
     addRoadItem() {
-        this.roadItems.push(this.roadItem);
+        if (!this.cursorItem) {
+            return;
+        }
 
         const item = this.paint();
 
         if (item) {
-            this.roadItem = item;
+            // попробовать создавать айтем ид с новым ид
+            const {x, y, z} = this.cursorItem.position;
+            item.position = new Vector3(x, y, z);
+
+            this.roadItems.push(item);
+
+            if (true) {
+                const coords = getPositionMesh(item, {
+                    scene: this.scene,
+                    camera: this.camera,
+                    engine: this.engine,
+                });
+
+                ui.dispatchEvent<ElementSize>(
+                    EVENTS.CHANGE_BUILDINGS_COORDS,
+                    coords,
+                );
+            }
         }
+    }
+
+    cancelBuilding() {
+        this.roadItems.forEach((roadItem) => {
+            roadItem.dispose();
+        });
+        this.cursorItem?.dispose();
+
+        this.roadItems = [];
+        this.cursorItem = null;
     }
 }
